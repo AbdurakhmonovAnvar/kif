@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body onload="getAll()">
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+    <a class="navbar-brand" href="http://localhost:8080"><img src="\image\logo.png" width="60" height="60"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div>
+        <span style="color: white ; font-size: 14px;">Toshkent axborot texnalogiyalari universiteti<br>Kif fakulteti</br></span>
+
+    </div>
+    <div class="collapse navbar-collapse" id="collapsibleNavbar" style="margin: 5px 50px 10px 30px">
+        <ul class="navbar-nav" >
+            <li class="nav-item">
+                <a style="margin: 0px 0px 0px 20px" class="nav-link" href="http://localhost:8080/teacher" >Teacher</a>
+            </li>
+            <li class="nav-item">
+                <a style="margin: 0px 0px 0px 20px" class="nav-link" href="about.html">About</a>
+            </li>
+
+        </ul>
+    </div>
+    <div>
+        <form>
+            <div class="form-row">
+                <div class="col">
+                    <input type="text" class="form-control" id="email" placeholder="Enter email" name="email" style="width: 150px;height: 30px; margin: 10px 10px 10px 10px;">
+                </div>
+                <div class="col">
+                    <input type="password" class="form-control" placeholder="Enter password" name="pswd"
+                           style="width: 150px;height: 30px; margin: 10px 10px 10px 10px;">
+                </div>
+                <div class="button">
+                    <button type="button" class="btn btn-secondary" style="width:100px ; height : 31px; margin: 9px 10px 10px 10px;">Submit</button>
+
+                </div>
+            </div>
+        </form>
+    </div>
+
+</nav>
+<div class="row">
+    <div id="#demo" class="carousel slide" data-ride="carousel">
+
+        <!-- Indicators -->
+        <ul class="carousel-indicators">
+            <li data-target="#demo" data-slide-to="0" class="active"></li>
+            <li data-target="#demo" data-slide-to="1"></li>
+            <li data-target="#demo" data-slide-to="2"></li>
+        </ul>
+
+        <!-- The slideshow -->
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="\image\tuit_slide_four.jpg" alt="Los Angeles" width="1364 ">
+            </div>
+            <div class="carousel-item">
+                <img src="\image\tuit_slide_five.jpg" alt="Chicago" width="1364">
+            </div>
+            <div class="carousel-item">
+                <img src="\image\tuit_slide_one.jpg" alt="New York" width="1364">
+            </div>
+        </div>
+
+        <!-- Left and right controls -->
+        <a class="carousel-control-prev" href="#demo" data-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </a>
+        <a class="carousel-control-next" href="#demo" data-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </a>
+    </div>
+
+
+
+</div>
+
+
+<div class="container">
+    <div id="table"></div>
+    <div class="container">
+        <h2>O'qituvchi qo'shish</h2>
+        <!-- Button to Open the Modal -->
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+            Yaratish
+        </button>
+
+        <!-- The Modal -->
+        <div class="modal" id="myModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">O'qituvchi yaratish</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <form action="/action_page.php">
+                            <div class="form-group">
+                                <label for="name">Ism </label>
+                                <input class="form-control" id="name" type="text" name="name" value=""
+                                       placeholder="Ismni kiriting">
+                            </div>
+                            <div class="form-group">
+                                <label for="surname">Familya</label>
+                                <input class="form-control" id="surname" type="text" name="name" value=""
+                                       placeholder="Familyani kiritng">
+                            </div>
+                            <div class="form-group">
+                                <label for="direction">Yo'nailish</label>
+                                <input class="form-control" id="direction" type="text" name="name" value=""
+                                       placeholder="Yo'nalishini kiriting">
+                            </div>
+                            <div class="form-group">
+                                <label for="seniority">Staj</label>
+                                <input class="form-control" id="seniority" type="text" name="name" value=""
+                                       placeholder="Stajini kiriitng">
+                            </div>
+
+
+                        </form>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-dark" data-dismiss="modal" onclick="save()">saqlash</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<script>
+    function getAll() {
+        axios.get("/api/v1/users/getAll")
+            .then(function (result) {
+                console.log(result)
+                createTable(result.data);
+            })
+    }
+
+    function createTable(tableList) {
+        const table = document.createElement("table");
+        const tbody = document.createElement("tbody");
+        const thead = document.createElement("thead");
+
+        const first = document.createElement("tr");
+        first.append(createTableTemp("th", "Id"))
+        first.append(createTableTemp("th", "Nomi"))
+        first.append(createTableTemp("th", "Familyasi"))
+        first.append(createTableTemp("th", "Yo'nalishi"))
+        first.append(createTableTemp("th", "Staji"))
+        thead.classList.add("th", "thead-dark")
+        thead.append(first)
+
+        for (let i = 0; i < tableList.length; i++) {
+            const row = document.createElement("tr");
+            row.append(createTableTemp("td", tableList[i].id))
+            row.append(createTableTemp("td", tableList[i].name))
+            row.append(createTableTemp("td", tableList[i].surname))
+            row.append(createTableTemp("td", tableList[i].direction))
+            row.append(createTableTemp("td", tableList[i].seniority))
+            tbody.append(row)
+        }
+
+        table.append(thead);
+        table.append(tbody)
+        table.classList.add("table");
+        table.classList.add("table-striped");
+        document.getElementById("table").append(table);
+    }
+
+    function createTableTemp(tableElement, text) {
+        const temp = document.createElement(tableElement);
+        temp.append(text);
+        return temp;
+    }
+    function save() {
+        const name = document.getElementById("name").value
+        const surname = document.getElementById("surname").value
+        const direction = document.getElementById("direction").value
+        const seniority = document.getElementById("seniority").value
+        console.log(name)
+        console.log(surname)
+        console.log(direction)
+        console.log(seniority)
+
+        axios.post("/api/v1/users", {
+            name: name,
+            surname:surname,
+            direction:direction,
+            seniority:seniority
+
+        }).then(
+            window.location = "/teacher"
+        )
+    }
+    </script>
+<div class="footer" style="background-color: rgb(37, 34, 34) ;">
+
+    <div class="row">
+        <div class="col-sm-0">.asdsad</div>
+
+        <p style="font-size: 13px; margin-top:70px; color: white">Bu web sahifa Web dasturlash fani uchun
+            222-21 guruh talabasi<br>
+            Abduraxmonov Anvar tomonidan yozildi<br>
+            Murojat uchun <a href="https://t.me/a_anvar_a">Telegram orqali</a> Murojat qilishiz mumkin
+
+        </p>
+        <div class="col-sm0">
+
+            <div style=" margin-top: 80px; margin-left: 700px;">
+
+                <a href="https://instagram.com/"><img src="\image\insta.png" style="width:40px ; height: 40px;"></a>
+                <a href="https://t.me/a_anvar_a"><img src="\image\tg.png" style="width:40px ; height: 40px;"></a>
+
+                <a href="https://facebook.com"><img src="\image\fcb.png" style="width:40px ; height: 40px;"></a>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
